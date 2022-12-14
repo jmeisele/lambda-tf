@@ -51,6 +51,7 @@ jobs:
       - name: Generate .auto.tfvars
         working-directory: ./infra
         run: |
+          echo "ecr_name=\"${{ env.REPO_NAME}}\"" >> ./.auto.tfvars"
           echo "access_key=\"${{ secrets.AWS_ACCESS_KEY_ID }}\"" >> ./.auto.tfvars
           echo "secret_key=\"${{ secrets.AWS_SECRET_ACCESS_KEY }}\"" >> ./.auto.tfvars
           echo "image_tag=\"${{ env.REPO_NAME}}\"" >> ./.auto.tfvars

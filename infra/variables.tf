@@ -18,3 +18,7 @@ variable "image_tag" {
 variable "lambda_func_name" {
   type = string
 }
+
+variable "ecr_name" {
+  type = string
+}
