@@ -54,7 +54,7 @@ jobs:
           echo "ecr_name=\"${{ env.REPO_NAME}}\"" >> ./.auto.tfvars
           echo "access_key=\"${{ secrets.AWS_ACCESS_KEY_ID }}\"" >> ./.auto.tfvars
           echo "secret_key=\"${{ secrets.AWS_SECRET_ACCESS_KEY }}\"" >> ./.auto.tfvars
-          echo "image_tag=\"${{ env.REPO_NAME}}\"" >> ./.auto.tfvars
+          echo "image_tag=\"latest\"" >> ./.auto.tfvars
           echo "lambda_func_name=\"${{ env.REPO_NAME}}\"" >> ./.auto.tfvars
           echo "---------------------------------------------------------"
           cat ./.auto.tfvars
