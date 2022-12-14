@@ -5,7 +5,10 @@
 	"image": "mcr.microsoft.com/devcontainers/python:0-3.8",
 	"features": {
 		"ghcr.io/devcontainers/features/github-cli:1": {},
-		"ghcr.io/devcontainers/features/terraform:1": {}
+		"ghcr.io/devcontainers/features/terraform:1": {},
+		"ghcr.io/devcontainers-contrib/features/flake8:1": {},
+		"ghcr.io/devcontainers-contrib/features/poetry:1": {},
+		"ghcr.io/devcontainers-contrib/features/pylint:1": {}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
