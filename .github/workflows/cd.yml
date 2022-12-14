@@ -1,10 +1,10 @@
 name: Deploy Lambda Function with API gateway
 
-# on:
-#   push:
-#     branches:
-#     - main
-#   pull_request:
+on:
+  push:
+    branches:
+    - main
+  pull_request:
 
 env:
   REPO_NAME: ${{ github.event.repository.name }}
