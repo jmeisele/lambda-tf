@@ -86,7 +86,7 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
 }
 
 resource "aws_ecr_repository" "ecr" {
-  name                 = var.name
+  name                 = "davinci_ecr"
   image_tag_mutability = "IMMUTABLE"
   image_scanning_configuration {
     scan_on_push = true
