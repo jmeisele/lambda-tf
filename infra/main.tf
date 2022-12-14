@@ -85,12 +85,46 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
   policy_arn = aws_iam_policy.iam_policy_for_lambda.arn
 }
 
+resource "aws_ecr_repository" "ecr" {
+  name                 = var.name
+  image_tag_mutability = "IMMUTABLE"
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
+resource "aws_ecr_repository_policy" "ecr_policy" {
+  repository = aws_ecr_repository.ecr.name
+  policy     = <<EOF
+  {
+    "Version": "2008-10-17",
+    "Statement": [
+      {
+        "Sid": "Adds access to push and pull images",
+        "Effect": "Allow",
+        "Principal": "*",
+        "Action": [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetLifecyclePolicy",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+      }
+    ]
+  }
+  EOF
+}
+
 data "aws_ecr_repository" "repository" {
-  name = "melkor_lambda_ecr"
+  name = "davinci_lambda_ecr"
 }
 
 data "aws_ecr_image" "image" {
-  repository_name = "melkor_lambda_ecr"
+  repository_name = "davinci_lambda_ecr"
   image_tag       = var.image_tag
 }
 
