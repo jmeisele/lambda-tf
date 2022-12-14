@@ -119,20 +119,20 @@ resource "aws_ecr_repository_policy" "ecr_policy" {
   EOF
 }
 
-data "aws_ecr_repository" "repository" {
-  name = "davinci_lambda_ecr"
-}
+# data "aws_ecr_repository" "repository" {
+#   name = aws_ecr_repository.ecr.name
+# }
 
-data "aws_ecr_image" "image" {
-  repository_name = "davinci_lambda_ecr"
-  image_tag       = var.image_tag
-}
+# data "aws_ecr_image" "image" {
+#   repository_name = aws_ecr_repository.ecr.name
+#   image_tag       = var.image_tag
+# }
 
-# Create a lambda function from the image we uploaded to ECR
-resource "aws_lambda_function" "terraform_lambda_func" {
-  function_name = var.lambda_func_name
-  role          = aws_iam_role.iam_for_lambda.arn
-  image_uri     = "${data.aws_ecr_repository.repository.repository_url}@${data.aws_ecr_image.image.image_digest}"
-  depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
-  package_type  = "Image"
-}
+# # Create a lambda function from the image we uploaded to ECR
+# resource "aws_lambda_function" "terraform_lambda_func" {
+#   function_name = var.lambda_func_name
+#   role          = aws_iam_role.iam_for_lambda.arn
+#   image_uri     = "${data.aws_ecr_repository.repository.repository_url}@${data.aws_ecr_image.image.image_digest}"
+#   depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
+#   package_type  = "Image"
+# }
