@@ -32,7 +32,7 @@ provider "aws" {
 }
 
 locals {
-  lambda_func_dir      = "lambda_tf"
+  lambda_func_dir     = "lambda_tf"
   account_id          = var.account_id
   ecr_repository_name = var.ecr_name
   ecr_image_tag       = "latest"
