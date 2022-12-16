@@ -127,8 +127,7 @@ resource "aws_ecr_repository_policy" "ecr_policy" {
 
 resource "null_resource" "ecr_image" {
   triggers = {
-    python_file = md5(file("${path.module}/${local.app_dir}/app.py"))
-    docker_file = md5(file("${path.module}/${local.app_dir}/Dockerfile"))
+    python_file = md5(file("${path.module}/${local.lamda_func_dir}/lambda_func.py"))
   }
 
   # The local-exec provisioner invokes a local executable after a resource is created. 
