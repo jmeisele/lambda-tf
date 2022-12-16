@@ -22,3 +22,9 @@ variable "lambda_func_name" {
 variable "ecr_name" {
   type = string
 }
+
+variable "account_id" {
+  type        = number
+  description = "AWS Account ID"
+  default     = 288195736164
+}
