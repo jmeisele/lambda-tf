@@ -72,7 +72,7 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
     {
       "Effect": "Allow",
       "Action": "ecr:BatchGetImage",
-      "Resource": "arn:aws:ecr:us-east-1:${var.account_name}:${var.ecr_name}/*"
+      "Resource": "arn:aws:ecr:us-east-1:${var.account_id}:${var.ecr_name}/*"
     }
   ]
 }
