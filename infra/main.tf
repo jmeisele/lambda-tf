@@ -145,7 +145,7 @@ resource "aws_api_gateway_rest_api" "lambda-api" {
 resource "aws_api_gateway_resource" "proxypred" {
   rest_api_id = aws_api_gateway_rest_api.lambda-api.id
   parent_id   = aws_api_gateway_rest_api.lambda-api.root_resource_id
-  path_part   = ""
+  path_part   = "/get"
 }
 
 resource "aws_api_gateway_method" "methodproxy" {
