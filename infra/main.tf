@@ -31,6 +31,12 @@ provider "aws" {
   skip_metadata_api_check = true
 }
 
+locals {
+  lamda_func_dir      = "lambda_tf"
+  account_id          = var.account_id
+  ecr_repository_name = var.ecr_name
+  ecr_image_tag       = "latest"
+}
 
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
@@ -119,23 +125,41 @@ resource "aws_ecr_repository_policy" "ecr_policy" {
   EOF
 }
 
-data "aws_ecr_repository" "repository" {
-  name = aws_ecr_repository.ecr.name
+resource "null_resource" "ecr_image" {
+  triggers = {
+    python_file = md5(file("${path.module}/${local.app_dir}/app.py"))
+    docker_file = md5(file("${path.module}/${local.app_dir}/Dockerfile"))
+  }
+
+  # The local-exec provisioner invokes a local executable after a resource is created. 
+  # This invokes a process on the machine running Terraform, not on the resource. 
+  # path.module: the filesystem path of the module where the expression is placed.
+  provisioner "local-exec" {
+    command = <<EOF
+            cd ..${path.module}
+            docker build -t ${aws_ecr_repository.ecr.repository_url}:${local.ecr_image_tag} .
+            docker push ${aws_ecr_repository.ecr.repository_url}:${local.ecr_image_tag}
+        EOF
+  }
 }
 
-data "aws_ecr_image" "image" {
-  repository_name = aws_ecr_repository.ecr.name
-  image_tag       = var.image_tag
-}
+# data "aws_ecr_repository" "repository" {
+#   name = aws_ecr_repository.ecr.name
+# }
 
-# Create a lambda function from the image we uploaded to ECR
-resource "aws_lambda_function" "terraform_lambda_func" {
-  function_name = var.lambda_func_name
-  role          = aws_iam_role.iam_for_lambda.arn
-  image_uri     = "${data.aws_ecr_repository.repository.repository_url}@${data.aws_ecr_image.image.image_digest}"
-  depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
-  package_type  = "Image"
-}
+# data "aws_ecr_image" "image" {
+#   repository_name = aws_ecr_repository.ecr.name
+#   image_tag       = var.image_tag
+# }
+
+# # Create a lambda function from the image we uploaded to ECR
+# resource "aws_lambda_function" "terraform_lambda_func" {
+#   function_name = var.lambda_func_name
+#   role          = aws_iam_role.iam_for_lambda.arn
+#   image_uri     = "${data.aws_ecr_repository.repository.repository_url}@${data.aws_ecr_image.image.image_digest}"
+#   depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
+#   package_type  = "Image"
+# }
 
 # Lambda Invoke & Event Source Mapping
 # resource "aws_api_gateway_rest_api" "lambda-api" {
