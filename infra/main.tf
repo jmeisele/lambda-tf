@@ -72,7 +72,7 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
     {
       "Effect": "Allow",
       "Action": "ecr:BatchGetImage",
-      "Resource": "arn:aws:ecr:us-east-1:803475916935:melkor_lambda_ecr/*"
+      "Resource": "arn:aws:ecr:us-east-1:${var.account_name}:${var.ecr_name}/*"
     }
   ]
 }
@@ -145,7 +145,7 @@ resource "aws_api_gateway_rest_api" "lambda-api" {
 resource "aws_api_gateway_resource" "proxypred" {
   rest_api_id = aws_api_gateway_rest_api.lambda-api.id
   parent_id   = aws_api_gateway_rest_api.lambda-api.root_resource_id
-  path_part   = "classify"
+  path_part   = ""
 }
 
 resource "aws_api_gateway_method" "methodproxy" {
