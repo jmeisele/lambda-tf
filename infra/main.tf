@@ -160,7 +160,7 @@ resource "aws_lambda_function" "terraform_lambda_func" {
   package_type  = "Image"
 }
 
-Lambda Invoke & Event Source Mapping
+# Lambda Invoke & Event Source Mapping
 resource "aws_api_gateway_rest_api" "lambda-api" {
   name = "serverless_lambda_gw"
 }
