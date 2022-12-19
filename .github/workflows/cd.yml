@@ -35,10 +35,10 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
           
-      # - name: Install docker
-      #   id: install-docker
-      #   run: |
-      #     curl -fsSL https://get.docker.com -o get-docker.sh && chmod +x get-docker.sh && ./get-docker.sh
+      - name: Install docker
+        id: install-docker
+        run: |
+          curl -fsSL https://get.docker.com -o get-docker.sh && chmod +x get-docker.sh && ./get-docker.sh
 
       # - name: Build, tag, and push docker image to Amazon ECR
       #   env:
