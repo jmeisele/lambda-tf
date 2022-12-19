@@ -6,9 +6,9 @@
 #   rest_api_id = aws_api_gateway_rest_api.lambda-api.id
 #   parent_id   = aws_api_gateway_rest_api.lambda-api.root_resource_id
 #   path_part   = "gimme"
-    # request_paremeters = {
-        
-    # }
+# request_paremeters = {
+
+# }
 # }
 
 # resource "aws_api_gateway_method" "methodproxy" {
