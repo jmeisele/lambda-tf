@@ -6,9 +6,8 @@
 #   rest_api_id = aws_api_gateway_rest_api.lambda-api.id
 #   parent_id   = aws_api_gateway_rest_api.lambda-api.root_resource_id
 #   path_part   = "gimme"
-# request_paremeters = {
-
-# }
+#   #   request_paremeters = {
+#   #   }
 # }
 
 # resource "aws_api_gateway_method" "methodproxy" {
@@ -53,7 +52,7 @@
 #   function_name = aws_lambda_function.terraform_lambda_func.function_name
 #   principal     = "apigateway.amazonaws.com"
 
-#   # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
+#   #   # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
 #   source_arn = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.lambda-api.id}/*/${aws_api_gateway_method.methodproxy.http_method}${aws_api_gateway_resource.proxypred.path}"
 # }
 
@@ -76,7 +75,7 @@
 #   stage_name    = "testing"
 # }
 
-# # IAM for API
+# # # IAM for API
 # resource "aws_api_gateway_rest_api_policy" "api_allow_invoke" {
 #   rest_api_id = aws_api_gateway_rest_api.lambda-api.id
 
