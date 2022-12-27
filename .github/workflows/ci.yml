@@ -28,6 +28,7 @@ jobs:
           make test.coverage
 
   build-push-docker-images:
+    needs: lint-test
     name: Build Image
     runs-on: ubuntu-20.04
     permissions:
