@@ -71,7 +71,7 @@ jobs:
           docker build --no-cache -f $DOCKERFILE -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
-  deploy-lambda:
+  deploy-lambda(s):
     needs: build-push-docker-images
     name: Deploy Lambda Function w/ Terraform
     runs-on: ubuntu-20.04

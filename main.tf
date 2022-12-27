@@ -62,4 +62,6 @@ module "lambda_func" {
   func_name     = "lambda_func"
   ecr_name      = aws_ecr_repository.ecr.name
   ecr_image_tag = "lambda_func"
+  region        = var.region
+  account_id    = var.account_id
 }

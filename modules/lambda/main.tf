@@ -48,7 +48,7 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
         "dynamodb:Query",
         "dynamodb:Scan"
       ],
-      "Resource": "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.dynamo_db_table_name}"
+      "Resource": "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.access_to_dynamo_db ? var.dynamo_db_table_name : null}"
     }
   ]
 }
