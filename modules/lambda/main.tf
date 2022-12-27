@@ -28,7 +28,7 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
 {
   "Version": "2012-10-17",
   "Statement": [
-    {mages
+    {
       "Effect": "Allow",
       "Action": [
         "logs:CreateLogGroup",
@@ -65,7 +65,7 @@ resource "aws_iam_policy" "iam_policy_for_lambda_dynamo" {
 {
   "Version": "2012-10-17",
   "Statement": [
-    {mages
+    {
       "Effect": "Allow",
       "Action": [
         "logs:CreateLogGroup",
