@@ -56,3 +56,10 @@ resource "aws_ecr_repository_policy" "ecr_policy" {
   }
   EOF
 }
+
+module "lambda_func" {
+  source        = "./modules/lambda"
+  func_name     = "lambda_func"
+  ecr_name      = aws_ecr_repository.ecr.name
+  ecr_image_tag = "lambda_func"
+}
