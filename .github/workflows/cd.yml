@@ -5,19 +5,22 @@ on:
     workflows: [Continuous Integration]
     types:
       - completed
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
 
 env:
   REPO_NAME: ${{ github.event.repository.name }}
   TF_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
 jobs:
+  on-failure:
+    runs-on: ubuntu-20.04
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
+
   deploy-lambda:
     name: Deploy Lambda Function w/ Terraform
     runs-on: ubuntu-20.04
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       id-token: write
@@ -28,15 +31,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: us-east-1
-
       - name: Generate .auto.tfvars
-        working-directory: ./infra
         run: |
           echo "access_key=\"${{ secrets.AWS_ACCESS_KEY_ID }}\"" >> ./.auto.tfvars
           echo "secret_key=\"${{ secrets.AWS_SECRET_ACCESS_KEY }}\"" >> ./.auto.tfvars
@@ -51,12 +46,10 @@ jobs:
 
       - name: Terrform format
         id: fmt
-        # working-directory: ./infra
         run: terraform fmt -check
 
       - name: Terraform Init
         id: init
-        # working-directory: ./infra
         env:
           TF_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: |
@@ -64,7 +57,6 @@ jobs:
 
       - name: Terraform validate
         id: validate
-        # working-directory: ./infra
         env:
           TF_WORKSPACE: ${{ env.REPO_NAME }}
           TF_TOKEN: ${{ secrets.TF_API_TOKEN }}
@@ -72,8 +64,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        # working-directory: ./infra
-        if: github.event_name == 'pull_request'
+        # if: github.event_name == 'pull_request'
         env:
           TF_WORKSPACE: ${{ env.REPO_NAME }}
           TF_TOKEN: ${{ secrets.TF_API_TOKEN }}
@@ -115,7 +106,6 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
-        # working-directory: ./infra
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           TF_WORKSPACE: ${{ env.REPO_NAME }}

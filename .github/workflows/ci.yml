@@ -67,5 +67,5 @@ jobs:
           DOCKERFILE: Dockerfile.lambda_func
           IMAGE_TAG: lambda_func
         run: |
-          docker build --no-cache -f $DOCKERFILE -t $REGISTRY/${{ env.AWS_ECR_REPO }}:$IMAGE_TAG .
+          docker build --no-cache -t $REGISTRY/${{ env.AWS_ECR_REPO }}:$IMAGE_TAG -f $DOCKERFILE
           docker push $REGISTRY/${{ env.AWS_ECR_REPO }}:$IMAGE_TAG
