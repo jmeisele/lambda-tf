@@ -97,7 +97,7 @@ EOF
 # Policy Attachment on the role.
 resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
   role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = var.access_to_dynamo_db ? aws_iam_policy.iam_policy_for_lambda.arn : aws_iam_policy.iam_policy_for_lambda_dynamo.arn
+  policy_arn = var.access_to_dynamo_db ? aws_iam_policy.iam_policy_for_lambda[0].arn : aws_iam_policy.iam_policy_for_lambda_dynamo[0].arn
 }
 
 data "aws_ecr_repository" "repository" {
