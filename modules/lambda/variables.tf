@@ -25,3 +25,14 @@ variable "dynamo_db_table_name" {
   description = "DyanmoDB table name Lambda func needs access to"
   default     = null
 }
+
+variable "account_id" {
+  type        = number
+  description = "AWS Account ID"
+  default     = 288195736164
+}
+
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
