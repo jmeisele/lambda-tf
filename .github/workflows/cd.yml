@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
-      - run: echo 'The triggering workflow failed'
+      - name: Triggering Workflow Failed
+        run: echo 'The triggering workflow failed'
 
   deploy-lambda:
     name: Deploy Lambda Function w/ Terraform
