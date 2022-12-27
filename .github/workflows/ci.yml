@@ -1,0 +1,66 @@
+name: Continuous Integration
+
+on: [push]
+
+jobs:
+  lint-test:
+    name: Lint and Test Python code
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.8.2
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.2
+
+      - name: Install dependencies
+        run: |
+          make setup
+
+      - name: Lint our code
+        run: |
+          make lints.format.check
+
+      - name: Test our code
+        run: |
+          make test.coverage
+
+  build-push-docker-images:
+    name: Build Image
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      id-token: write
+      packages: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Install docker
+        id: install-docker
+        run: |
+          curl -fsSL https://get.docker.com -o get-docker.sh && chmod +x get-docker.sh && ./get-docker.sh
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push lambda_func.py to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          DOCKERFILE: Dockerfile.lambda_func
+          IMAGE_TAG: lambda_func
+        run: |
+          docker build --no-cache -f $DOCKERFILE -t $REGISTRY/${{ env.AWS_ECR_REPO }}:$IMAGE_TAG .
+          docker push $REGISTRY/${{ env.AWS_ECR_REPO }}:$IMAGE_TAG

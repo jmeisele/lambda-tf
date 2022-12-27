@@ -1,9 +1,13 @@
-name: Deploy Lambda Function with API gateway
+name: Continuous Deployment
 
 on:
+  workflow_run:
+    workflows: [Continuous Integration]
+    types:
+      - completed
   push:
     branches:
-    - main
+      - main
   pull_request:
 
 env:
@@ -23,64 +27,44 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-          
-      - name: Install docker
-        id: install-docker
-        run: |
-          curl -fsSL https://get.docker.com -o get-docker.sh && chmod +x get-docker.sh && ./get-docker.sh
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: us-east-1
 
-      # - name: Build, tag, and push docker image to Amazon ECR
-      #   env:
-      #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #     FULL_IMAGE_TAG: ${{ env.REPO_NAME }}
-      #   run: |
-      #     docker build --no-cache -t $REGISTRY/${{ env.REPO_NAME }} .
-      #     docker push $REGISTRY/${{ env.REPO_NAME }}
-      
       - name: Generate .auto.tfvars
         working-directory: ./infra
         run: |
-          echo "ecr_name=\"${{ env.REPO_NAME}}\"" >> ./.auto.tfvars
           echo "access_key=\"${{ secrets.AWS_ACCESS_KEY_ID }}\"" >> ./.auto.tfvars
           echo "secret_key=\"${{ secrets.AWS_SECRET_ACCESS_KEY }}\"" >> ./.auto.tfvars
-          echo "image_tag=\"latest\"" >> ./.auto.tfvars
-          echo "lambda_func_name=\"${{ env.REPO_NAME}}\"" >> ./.auto.tfvars
           echo "---------------------------------------------------------"
           cat ./.auto.tfvars
-          echo "---------------------------------------------------------"        
+          echo "---------------------------------------------------------"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-      
+
       - name: Terrform format
         id: fmt
-        working-directory: ./infra
+        # working-directory: ./infra
         run: terraform fmt -check
-        
+
       - name: Terraform Init
         id: init
-        working-directory: ./infra
+        # working-directory: ./infra
         env:
           TF_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: |
           terraform init
-    
+
       - name: Terraform validate
         id: validate
-        working-directory: ./infra
+        # working-directory: ./infra
         env:
           TF_WORKSPACE: ${{ env.REPO_NAME }}
           TF_TOKEN: ${{ secrets.TF_API_TOKEN }}
@@ -88,14 +72,14 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        working-directory: ./infra
+        # working-directory: ./infra
         if: github.event_name == 'pull_request'
         env:
           TF_WORKSPACE: ${{ env.REPO_NAME }}
           TF_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: terraform plan -no-color -input=false
         continue-on-error: true
-      
+
       - name: Update Pull Request
         uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
@@ -131,7 +115,7 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
-        working-directory: ./infra
+        # working-directory: ./infra
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           TF_WORKSPACE: ${{ env.REPO_NAME }}

@@ -1,7 +1,7 @@
 PROJECT=LAMBDA-TF
 VERSION=0.1.0
 PYTHON_VERSION=3.8.1
-SOURCE_OBJECTS=lambda_tf tests
+SOURCE_OBJECTS=src tests
 
 setup:
 	pip3 install poetry==1.3.1

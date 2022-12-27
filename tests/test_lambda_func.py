@@ -1,6 +1,6 @@
 import json
 
-from lambda_tf.lambda_func import lambda_handler
+from src.lambda_func import lambda_handler
 
 
 def test_lambda_handler() -> None:

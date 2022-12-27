@@ -2,7 +2,6 @@ import json
 import logging
 from typing import Any, Dict
 
-
 format = "%(asctime)s %(levelname)s - %(message)s"
 logging.basicConfig(level=logging.DEBUG, format=format, force=True)
 logger = logging.getLogger()
