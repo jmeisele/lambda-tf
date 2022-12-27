@@ -5,10 +5,10 @@ on:
     workflows: [Continuous Integration]
     types:
       - completed
-  push:
-    branches:
-      - main
-  pull_request:
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
 
 env:
   REPO_NAME: ${{ github.event.repository.name }}

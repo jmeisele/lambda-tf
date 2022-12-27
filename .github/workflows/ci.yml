@@ -1,6 +1,10 @@
 name: Continuous Integration
 
 on: [push]
+  # push:
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
 
 jobs:
   lint-test:
@@ -29,7 +33,7 @@ jobs:
 
   build-push-docker-images:
     needs: lint-test
-    name: Build Image
+    name: Build and Push Image to ECR
     runs-on: ubuntu-20.04
     permissions:
       contents: read

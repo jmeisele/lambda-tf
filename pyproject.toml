@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Lambda function"
 authors = ["jmeisele <jmeisele@yahoo.com>"]
 readme = "README.md"
-packages = [{include = "lambda_tf"}]
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
