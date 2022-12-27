@@ -72,7 +72,7 @@ jobs:
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
   deploy-lambda:
-  needs: build-push-docker-images
+    needs: build-push-docker-images
     name: Deploy Lambda Function w/ Terraform
     runs-on: ubuntu-20.04
     permissions:
