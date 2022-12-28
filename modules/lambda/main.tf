@@ -163,7 +163,7 @@ data "aws_ecr_image" "image" {
 
 # Create a lambda function from the image we uploaded to ECR
 resource "aws_lambda_function" "lambda_func" {
-  function_name = var.func_name
+  function_name = var.name
   role          = aws_iam_role.iam_for_lambda.arn
   image_uri     = "${data.aws_ecr_repository.repository.repository_url}@${data.aws_ecr_image.image.image_digest}"
   depends_on    = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
