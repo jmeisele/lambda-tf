@@ -67,7 +67,7 @@ module "lambda_func" {
 module "lambda_func_api_gateway" {
   source           = "./modules/api_gateway"
   name             = "lambda_func_api_gateway"
-  lambda_func_name = module.lambda_func.func_name
+  lambda_func_name = module.lambda_func.name
   stage_name       = "staging"
   endpoint         = "customers"
 }

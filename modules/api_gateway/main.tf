@@ -47,9 +47,10 @@ resource "aws_api_gateway_integration_response" "MyDemoIntegrationResponse" {
 }
 
 resource "aws_lambda_permission" "apigw_lambda" {
-  statement_id  = "AllowExecutionFromAnyWhere"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.terraform_lambda_func.function_name
+  statement_id = "AllowExecutionFromAnyWhere"
+  action       = "lambda:InvokeFunction"
+  # function_name = aws_lambda_function.terraform_lambda_func.function_name
+  function_name = var.lambda_func_name
   principal     = "apigateway.amazonaws.com"
 
   #   # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
