@@ -24,7 +24,7 @@ resource "aws_api_gateway_integration" "api_lambda" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = var.invoke_arn
+  uri                     = var.lambda_func_invoke_arn
   timeout_milliseconds    = 29000
 }
 
