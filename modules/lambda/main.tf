@@ -77,7 +77,7 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
   name        = "aws_iam_policy_for_terraform_aws_lambda_role"
   path        = "/"
   description = "AWS IAM Policy for managing aws lambda role"
-  policy      = var.access_to_dynamo_db ? local.with_dyanmo : local.without_dynamo
+  policy      = var.access_to_dynamo_db ? local.with_dynamo : local.without_dynamo
 }
 
 # resource "aws_iam_policy" "iam_policy_for_lambda" {
