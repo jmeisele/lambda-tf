@@ -65,9 +65,10 @@ module "lambda_func" {
 }
 
 module "lambda_func_api_gateway" {
-  source           = "./modules/api_gateway"
-  name             = "lambda_func_api_gateway"
-  lambda_func_name = module.lambda_func.name
-  stage_name       = "staging"
-  endpoint         = "customers"
+  source                 = "./modules/api_gateway"
+  name                   = "lambda_func_api_gateway"
+  lambda_func_name       = module.lambda_func.name
+  lambda_func_invoke_arn = module.lambda_func.invoke_arn
+  stage_name             = "staging"
+  endpoint               = "customers"
 }

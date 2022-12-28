@@ -28,3 +28,8 @@ variable "endpoint" {
   type        = string
   description = "API Gateway Endpoint"
 }
+
+variable "invoke_arn" {
+  type        = string
+  description = "Lambda Function invoke ARN"
+}
