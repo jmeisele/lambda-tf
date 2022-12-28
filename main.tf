@@ -69,6 +69,6 @@ module "lambda_func_api_gateway" {
   name                   = "lambda_func_api_gateway"
   lambda_func_name       = module.lambda_func.name
   lambda_func_invoke_arn = module.lambda_func.invoke_arn
-  stage_name             = "staging"
+  stage_name             = "api"
   endpoint               = "customers"
 }
