@@ -23,7 +23,7 @@ variable "access_to_dynamo_db" {
 variable "dynamo_db_table_name" {
   type        = string
   description = "DyanmoDB table name Lambda func needs access to"
-  default     = null
+  default     = ""
 }
 
 variable "account_id" {
