@@ -41,15 +41,6 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
       "Effect": "Allow",
       "Action": "ecr:BatchGetImage",
       "Resource": "arn:aws:ecr:${var.region}:${var.account_id}:${var.ecr_name}/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "dynamodb:BatchGetItem",
-        "dynamodb:GetItem",
-        "dynamodb:Query",
-        "dynamodb:Scan"
-      ],
     }
   ]
 }
