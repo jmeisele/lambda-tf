@@ -55,7 +55,7 @@
 #     {
 #       "Effect": "Allow",
 #       "Action": "ecr:BatchGetImage",
-#       "Resource": "arn:aws:ecr:us-east-1:${var.account_id}:${var.ecr_name}/*"
+#       "Resource": "arn:aws:ecr:${var.region}:${var.account_id}:${var.ecr_name}/*"
 #     }
 #   ]
 # }
