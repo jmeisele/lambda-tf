@@ -59,7 +59,16 @@ resource "aws_ecr_repository_policy" "ecr_policy" {
 
 module "lambda_func" {
   source        = "./modules/lambda"
-  func_name     = "lambda_func"
+  name          = "lambda_func"
   ecr_name      = aws_ecr_repository.ecr.name
   ecr_image_tag = "lambda_func"
+}
+
+module "lambda_func_api_gateway" {
+  source                 = "./modules/api_gateway"
+  name                   = "lambda_func_api_gateway"
+  lambda_func_name       = module.lambda_func.name
+  lambda_func_invoke_arn = module.lambda_func.invoke_arn
+  stage_name             = "staging"
+  endpoint               = "customers"
 }
